@@ -1,4 +1,4 @@
-# How to setup multipath iscsi disk on one rbd block device(ceph rbd)
+### How to setup multipath iscsi disk on one rbd block device(ceph rbd)
 
 memo:
 1. ceph rbd not support write rbd device from different client at same time, So the iscsi service based rbd must be active-enable
@@ -35,10 +35,12 @@ How to:
 ```
 2. create rbd named iscsi_rbd
 
+```
 [root@node1 ~]# rbd -p rbd_pool create iscsi_rbd --size 512
 [root@node1 ~]# rbd -p rbd_pool ls -l
 NAME              SIZE PARENT FMT PROT LOCK
 iscsi_rbd         512M          1
+```
 
 3. install tgtd on iscsi server
 	1) if you use rhel7, because there is nothing about tgtd package in rhel7, and the scsi-target-utils package in epel is not support rbd backstore type.
@@ -48,6 +50,7 @@ iscsi_rbd         512M          1
 
 	3) you need config the rhel7 repo and ceph repo
 
+```
 [root@node1 tgtd]# ls
 perl-Config-General-2.51-2.el7.noarch.rpm
 scsi-target-utils-1.0.55-1.el7.x86_64.rpm
@@ -55,10 +58,13 @@ scsi-target-utils-1.0.55-1.el7.x86_64.rpm
 [root@node1 tgtd]# yum install -y scsi-target-utils-1.0.55-1.el7.x86_64.rpm
 [root@node1 tgtd]# systemctl start tgtd
 [root@node1 tgtd]# systemctl enable tgtd
+```
     
     Now please make sure the tgtd support rbd backing store
 
+```
 [root@node1 tgtd]# tgtadm --lld iscsi --op show --mode system
+```
     
     If you found the follow message in output, that mean your tgtd support rbd:)
         Backing stores:
@@ -69,7 +75,11 @@ Note: you need do the same install work in another iscsi-server(node2)
     
     Modify the tgtd config file /etc/tgtd/targets.conf
 
+```console
 [root@node1 tgt]# vi /etc/tgt/conf.d/rbd-iscsi.conf
+```
+
+```xml
 <target iqn.2015-06.rbd.example.com:iscsi-rbd1>
     driver iscsi
     bs-type rbd
@@ -79,6 +89,7 @@ Note: you need do the same install work in another iscsi-server(node2)
     scsi_sn multipath-iscsi-rbd-1
     scsi_id IET bd4ab034
 </target>
+```
 
 Note:
     1) the multipath program use scsi_id get the scsi id from iscsi disk, so we must specify the scsi_id configure in config file.
