@@ -12,7 +12,7 @@ memo:
 
 How to:
 1. Ceph envirment:
-
+```console
 [root@node1 ~]# ceph -s
     cluster 3ee07517-1fad-43e7-98ee-091148c65f67
      health HEALTH_WARN clock skew detected on mon.node2, mon.node3
@@ -32,7 +32,7 @@ How to:
 2	1			osd.2	up	1
 [root@node1 ~]# ceph osd lspools
 0 data,1 metadata,2 rbd,3 mypool,4 rbd_pool,
-
+```
 2. create rbd named iscsi_rbd
 
 [root@node1 ~]# rbd -p rbd_pool create iscsi_rbd --size 512
