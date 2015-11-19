@@ -1,6 +1,7 @@
 ### How to setup multipath iscsi disk on one rbd block device(ceph rbd)
 
 memo:
+
 1. ceph rbd not support write rbd device from different client at same time, So the iscsi service based rbd must be active-enable
 2. iscsi based rbd could use tgtd or lio.
 3. Need set the write-cache off
