@@ -98,6 +98,7 @@ Note:
     3) specify the verdor_id and scsi_sn is the interest thing，little useage for multipath
     4) turn off the write-cache for data safe.
 
+```console
 [root@node1 tgt]# /etc/init.d/tgtd reload
 [root@node1 tgt]# tgt-admin -s
 ...
@@ -109,7 +110,7 @@ Note:
             ...
             Backing store type: rbd
             Backing store path: rbd_pool/iscsi_rbd
-
+```
 Now, config tgtd on node2, every thing is same expect the follow config:
     <target iqn.2015-06.rbd.example.com:iscsi-rbd2>
 Because there can't have the same iqn target in one iscsi cluster.
@@ -120,7 +121,7 @@ Because there can't have the same iqn target in one iscsi cluster.
 [root@admin ~]# yum install -y iscsi-initiator-utils device-mapper-multipath
 
   2) scan iscsi disk
-
+```console
 [root@admin ~]# iscsiadm -m discovery -t sendtargets -p 192.168.56.81
 192.168.56.81:3260,1 iqn.2015-06.rbd.example.com:iscsi-rbd1
 [root@admin ~]# iscsiadm -m discovery -t sendtargets -p 192.168.56.82
@@ -134,11 +135,13 @@ Because there can't have the same iqn target in one iscsi cluster.
 sdb             8:16   0  512M  0 disk
 sdc             8:32   0  512M  0 disk
 ...
+```
     OK, we can found two disk with same size
 
   3) config multipath
 
   Create the multipath config file:
+```console
 [root@admin /]# vi /etc/multipath.conf
 defaults {
     udev_dir        /dev
@@ -153,9 +156,10 @@ defaults {
     no_path_retry       fail
     user_friendly_names yes
 }
+```
+**Note： The most important configuration is "path_grouping_policy failover".**
 
-Note： The most important configuration is "path_grouping_policy failover".
-
+```console
 [root@admin /]# systemctl stop multipathd
 [root@admin /]# systemctl start multipathd
 [root@admin /]# multipath -ll
@@ -167,10 +171,14 @@ size=512M features='0' hwhandler='0' wp=rw
 | `- 3:0:0:1 sdb 8:16 active ready running
 `-+- policy='service-time 0' prio=1 status=enabled
   `- 4:0:0:1 sdc 8:32 active ready running
+```
 
-Note: interesting thing, you could use scsi_id command get the iscsi disk id:
+**Note: interesting thing, you could use scsi_id command get the iscsi disk id:**
+
+```console
 [root@admin /]# /lib/udev/scsi_id -u -g -p0x83 /dev/sdc
 3600000000000000000000e00bd4ab034
+```
 If you config the "scsi_id" is "12345678", please try ,what is the output? :)
 
 We could see one path is active and another path is enabled.
