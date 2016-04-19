@@ -93,10 +93,10 @@ Note: you need do the same install work in another iscsi-server(node2)
 ```
 
 Note:
-    1) the multipath program use scsi_id get the scsi id from iscsi disk, so we must specify the scsi_id configure in config file.
-    2) scsi_id can be any string,such as "3231b32",but must unique in your cluser.
-    3) specify the verdor_id and scsi_sn is the interest thing，little useage for multipath
-    4) turn off the write-cache for data safe.
+    1. the multipath program use scsi_id get the scsi id from iscsi disk, so we must specify the scsi_id configure in config file.
+    2. scsi_id can be any string,such as "3231b32",but must unique in your cluser.
+    3. specify the verdor_id and scsi_sn is the interest thing，little useage for multipath
+    4. turn off the write-cache for data safe.
 
 ```console
 [root@node1 tgt]# /etc/init.d/tgtd reload
@@ -116,11 +116,11 @@ Now, config tgtd on node2, every thing is same expect the follow config:
 Because there can't have the same iqn target in one iscsi cluster.
 
 5. config multipath in iscsi client
-  1) install multipath package and iscsi package
+  1. install multipath package and iscsi package
 
 [root@admin ~]# yum install -y iscsi-initiator-utils device-mapper-multipath
 
-  2) scan iscsi disk
+  2. scan iscsi disk
 ```console
 [root@admin ~]# iscsiadm -m discovery -t sendtargets -p 192.168.56.81
 192.168.56.81:3260,1 iqn.2015-06.rbd.example.com:iscsi-rbd1
@@ -138,7 +138,7 @@ sdc             8:32   0  512M  0 disk
 ```
     OK, we can found two disk with same size
 
-  3) config multipath
+  3. config multipath
 
   Create the multipath config file:
 ```console
