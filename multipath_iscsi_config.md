@@ -196,3 +196,49 @@ iscsiadm -m node --logout
 OK! That's all, good luck!
 
 
+
+# install packages
+sudo apt-get install open-iscsi multipath-tools
+
+# Edit multipath conf
+cat << EOF > /etc/multipath.conf
+defaults {
+    udev_dir        /dev
+    selector        "round-robin 0"
+    path_grouping_policy    failover
+    uid_attribute       ID_SERIAL
+    path_checker        readsector0
+    rr_min_io       100
+    max_fds         8192
+    rr_weight       priorities
+    failback        immediate
+    no_path_retry       fail
+    user_friendly_names yes
+}
+EOF
+
+
+```console
+# restart services 
+service open-iscsi restart
+service multipath-tools restart
+
+
+# discover targets
+iscsiadm -m discovery -t st -p vtydc2-p10sis0103-n37
+iscsiadm -m discovery -t st -p vtydc2-p10sis0103-n38
+
+# map targets
+iscsiadm -m node  -l -T iqn.2016-04.com.scaleway:iscsi-rbd_1
+iscsiadm -m node  -l -T iqn.2016-04.com.scaleway:iscsi-rbd_2
+
+# check multipath
+multipath ll
+
+# check if new devices have been created
+cat /proc/partitions
+
+# format device-mapper device
+
+# use the filesystem !!
+```
