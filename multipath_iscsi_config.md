@@ -93,6 +93,7 @@ Note: you need do the same install work in another iscsi-server(node2)
 ```
 
 Note:
+
     1. the multipath program use scsi_id get the scsi id from iscsi disk, so we must specify the scsi_id configure in config file.
     2. scsi_id can be any string,such as "3231b32",but must unique in your cluser.
     3. specify the verdor_id and scsi_sn is the interest thing，little useage for multipath
