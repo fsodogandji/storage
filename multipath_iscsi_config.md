@@ -114,10 +114,12 @@ Now, config tgtd on node2, every thing is same expect the follow config:
     <target iqn.2015-06.rbd.example.com:iscsi-rbd2>
 Because there can't have the same iqn target in one iscsi cluster.
 
-5. config multipath in iscsi client
+
+#### CLIENT SIDE
+1. config multipath in iscsi client
   1. install multipath package and iscsi package
 
-[root@admin ~]# yum install -y iscsi-initiator-utils device-mapper-multipath
+[root@admin ~]# sudo apt-get install open-iscsi multipath-tools
 
   2. scan iscsi disk
 ```console
