@@ -44,9 +44,7 @@ iscsi_rbd         512M          1
 ```
 
 3. install tgtd on iscsi server
-	1. if you use rhel7, because there is nothing about tgtd package in rhel7, and the scsi-target-utils package in epel is not support rbd backstore type.
-	   Hoho~~~, you can download the package in my baidu-disk:
-	   http://pan.baidu.com/s/1kToZrkr
+	1. sudo apt-get update && sudo apt-get install tgt
 	2. on the iscsi server, you need install ceph-common package and copy the ceph.conf and admin key from one ceph node.
 
 	3. you need config the rhel7 repo and ceph repo
