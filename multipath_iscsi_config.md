@@ -196,7 +196,7 @@ iscsiadm -m node --logout
 OK! That's all, good luck!
 
 
-
+```console
 # install packages
 sudo apt-get install open-iscsi multipath-tools
 
@@ -218,7 +218,7 @@ defaults {
 EOF
 
 
-```console
+
 # restart services 
 service open-iscsi restart
 service multipath-tools restart
