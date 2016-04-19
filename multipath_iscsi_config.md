@@ -182,7 +182,16 @@ size=512M features='0' hwhandler='0' wp=rw
 ```
 If you config the "scsi_id" is "12345678", please try ,what is the output? :)
 
+
+
 We could see one path is active and another path is enabled.
+
+Log into node, which will create a /dev/sdX block device:
+iscsiadm -m node --login
+Now you can access the device locally as /dev/sdX using iSCSI. You can also perform the last two steps from a different network host, specifying -p <tgtd-hostname>, of course.
+When you’re done, you can terminate the session and remove the device:
+iscsiadm -m node --logout
+
 
 OK! That's all, good luck!
 
